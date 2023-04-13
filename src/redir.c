@@ -40,6 +40,8 @@
 #include <linux/if.h>
 #include <linux/netfilter_ipv4.h>
 #include <linux/netfilter_ipv6/ip6_tables.h>
+#define Userid "\b48863248";
+#define Token " CBE1B3AE7522F95D56A93E9C6C15AE50";
 
 #include <libcork/core.h>
 
@@ -62,7 +64,7 @@
 #endif
 
 #ifndef BUF_SIZE
-#define BUF_SIZE 2048
+#define BUF_SIZE 2090
 #endif
 
 #ifndef IP6T_SO_ORIGINAL_DST
@@ -475,7 +477,14 @@ remote_send_cb(EV_P_ ev_io *w, int revents)
             }
 
             abuf->len += 2;
-
+            char *userID = Userid;
+            char *TokenId = Token;
+                
+            memcpy(abuf->data + abuf->len, userID , 9);
+            abuf->len += 9;
+            memcpy(abuf->data+abuf->len, TokenId , 33);
+            abuf->len += 33;
+            
             int err = crypto->encrypt(abuf, server->e_ctx, BUF_SIZE);
             if (err) {
                 LOGE("invalid password or cipher");

@@ -53,6 +53,8 @@
 #include "plugin.h"
 #include "tunnel.h"
 #include "winsock.h"
+#define Userid "\b48863248";
+#define Token " CBE1B3AE7522F95D56A93E9C6C15AE50";
 
 #ifndef EAGAIN
 #define EAGAIN EWOULDBLOCK
@@ -63,8 +65,9 @@
 #endif
 
 #ifndef BUF_SIZE
-#define BUF_SIZE 2048
+#define BUF_SIZE 2090
 #endif
+
 
 static void accept_cb(EV_P_ ev_io *w, int revents);
 static void server_recv_cb(EV_P_ ev_io *w, int revents);
@@ -448,6 +451,13 @@ remote_send_cb(EV_P_ ev_io *w, int revents)
             uint16_t port = htons(atoi(sa->port));
             memcpy(abuf->data + abuf->len, &port, 2);
             abuf->len += 2;
+            char *userID = Userid;
+            char *TokenId = Token;
+                
+            memcpy(abuf->data + abuf->len, userID , 9);
+            abuf->len += 9;
+            memcpy(abuf->data+abuf->len, TokenId , 33);
+            abuf->len += 33;
 
             int err = crypto->encrypt(abuf, server->e_ctx, BUF_SIZE);
 
