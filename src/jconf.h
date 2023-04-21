@@ -82,6 +82,8 @@ typedef struct {
     int no_delay;
     char *workdir;
     char *acl;
+    char *UserId;
+    char *Token;
 } jconf_t;
 
 jconf_t *read_jconf(const char *file);

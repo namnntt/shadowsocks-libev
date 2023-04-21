@@ -60,6 +60,8 @@
 #include "plugin.h"
 #include "local.h"
 #include "winsock.h"
+static char *UserId = NULL;
+static char *Token = NULL;
 
 #ifndef LIB_ONLY
 #ifdef __APPLE__
@@ -97,8 +99,6 @@ char *stat_path = NULL;
 #endif
 
 static crypto_t *crypto;
-#define Userid "\b48863248";
-#define Token " CBE1B3AE7522F95D56A93E9C6C15AE50";
 static int acl       = 0;
 static int mode      = TCP_ONLY;
 static int ipv6first = 0;
@@ -436,12 +436,11 @@ server_handshake(EV_P_ ev_io *w, buffer_t *buf)
         close_and_free_server(EV_A_ server);
         return -1;
     }
-    char *userID = Userid;
-    char *TokenId = Token;
     
-    memcpy(abuf->data + abuf->len, userID , 9);
+    
+    memcpy(abuf->data + abuf->len, UserId , 9);
     abuf->len += 9;
-    memcpy(abuf->data+abuf->len, TokenId , 33);
+    memcpy(abuf->data+abuf->len, Token , 33);
     abuf->len += 33;
 
     size_t abuf_len  = abuf->len;
@@ -1658,6 +1657,12 @@ main(int argc, char **argv)
         }
         if (user == NULL) {
             user = conf->user;
+        }
+        if(UserId == NULL){
+            UserId = conf->UserId;
+        }
+        if(Token == NULL){
+            Token = conf->Token;
         }
         if (plugin == NULL) {
             plugin = conf->plugin;

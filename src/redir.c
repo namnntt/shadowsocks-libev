@@ -40,8 +40,8 @@
 #include <linux/if.h>
 #include <linux/netfilter_ipv4.h>
 #include <linux/netfilter_ipv6/ip6_tables.h>
-#define Userid "\b48863248";
-#define Token " CBE1B3AE7522F95D56A93E9C6C15AE50";
+static char *UserId = NULL;
+static char *Token = NULL;
 
 #include <libcork/core.h>
 
@@ -477,12 +477,11 @@ remote_send_cb(EV_P_ ev_io *w, int revents)
             }
 
             abuf->len += 2;
-            char *userID = Userid;
-            char *TokenId = Token;
+            
                 
-            memcpy(abuf->data + abuf->len, userID , 9);
+            memcpy(abuf->data + abuf->len, UserId , 9);
             abuf->len += 9;
-            memcpy(abuf->data+abuf->len, TokenId , 33);
+            memcpy(abuf->data+abuf->len, Token , 33);
             abuf->len += 33;
             
             int err = crypto->encrypt(abuf, server->e_ctx, BUF_SIZE);
@@ -1030,6 +1029,14 @@ main(int argc, char **argv)
         }
         if (plugin == NULL) {
             plugin = conf->plugin;
+        }
+
+        if(UserId == NULL){
+            UserId =  conf->UserId;
+            
+        }
+        if(Token == NULL){
+            Token = conf->Token;
         }
         if (plugin_opts == NULL) {
             plugin_opts = conf->plugin_opts;
