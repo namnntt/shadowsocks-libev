@@ -82,7 +82,7 @@ static char *Token = NULL;
 #endif
 
 #ifndef BUF_SIZE
-#define BUF_SIZE 2048
+#define BUF_SIZE 2090
 #endif
 
 int verbose    = 0;
