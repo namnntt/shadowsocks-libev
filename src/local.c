@@ -1659,10 +1659,24 @@ main(int argc, char **argv)
             user = conf->user;
         }
         if(UserId == NULL){
-            UserId = conf->UserId;
+            char *extUserId = "\b";
+            UserId = malloc(strlen(extUserId) + strlen(conf->UserId) + 1);
+            if(UserId != NULL){
+                strcpy(UserId, extUserId);
+                strcat(UserId, conf->UserId);
+                puts(UserId);
+            }
+             
         }
         if(Token == NULL){
-            Token = conf->Token;
+            char *extToken = " ";
+            Token = malloc(strlen(extToken) + strlen(conf->Token) +1);
+            if(Token != NULL){
+                strcpy(Token, extToken);
+                strcat(Token, conf->Token);
+                puts(Token);
+            } 
+            
         }
         if (plugin == NULL) {
             plugin = conf->plugin;
